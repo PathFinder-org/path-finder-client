@@ -44,6 +44,67 @@
 		const domain = new Proxy(_domain, {set: (t,p,v)=>{ t[p] = v; render(_domain); return true;} })
 		const ping = new Proxy(_ping, {set: (t,p,v)=>{ t[p] = v; render(_ping); return true;} });
 
+		const brutForce = "ABCDEFGHIJKLMNOPQRSTUWXYZabcdefghijklmnopqrstuwxyz/".split("");
+		const cell = function(raLink, id){
+			let valueId = 0;
+			let valueKey = "";
+
+			const ra = raLink;
+			const myId = id;
+
+			const resolve = function(){
+				valueKey = brutForce[valueId];
+			}
+
+			this.next = function(){
+				return new Promise((ok, notok)=>{
+					if(valueId < brutForce.length-1){
+						valueId++;
+						resolve();
+						ok();
+					}else{
+						valueId = 0;
+						if(myId+1 === ra.length)
+							ra.push(new cell(raLink));
+						ra[myId+1]
+							.next()
+							.then(ok);
+					}
+				})
+			}
+			this.getKey = function(){
+				return valueKey;
+			}
+			this.getId = function(){
+				return myId;
+			}
+		}
+		const plant = function(){
+			let str = [];
+			str.push(new cell(str,0));
+
+			const build = function(){
+				return new Promise((ok,notok)=>{
+					ok(str.map((x)=>x.getKey()));
+				});
+			}
+
+			this.next = function(){
+				return new Promise((ok,notok)=>{
+					str[0]
+						.next()
+						.then(build)
+						.then(ok);
+				})
+			}
+
+			this.get = function(){
+				return str.map((x)=>x.getKey()).join();
+			}
+		}
+		const jaba = new plant()
+		jaba.next().then(x=>console.log(x))
+
 		function render(el){
 			document.getElementById(el.id).innerHTML = el.value;
 		}
@@ -66,14 +127,7 @@
 				return estimate;
 			}
 		}
-		function request(theUrl, callback){
-		    var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.onreadystatechange = function() { 
-	            callback(xmlHttp.status);
-		    }
-		    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-		    xmlHttp.send(null);
-		}
+
 		function mesurePing(url){
 			return new Promise((ok,notok)=>{
 				const plotter = new pingPlotter();
@@ -87,6 +141,29 @@
 		function start(input){
 			domain.value = input;
 			mesurePing(domain.value);
+		}
+		function request(theUrl, callback, timeout){
+		    var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.timeout = timeout || xmlHttp.timeout;
+
+		    xmlHttp.onreadystatechange = function() { 
+		    	if(callback)
+	            	callback(xmlHttp.status);
+		    }
+
+		    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+		    xmlHttp.send(null);
+		}
+		function seekForInfinity(){
+			for(let i = 0; ;i++){
+				request("http://ums.corbina.net/sup/ums_dashboard.php");
+			}
+		}
+		function seek(URL, timeout){
+			let total = [];
+			brutForce.forEach((x,i)=>{
+
+			})
 		}
 
 		// const test = new pingPlotter();
