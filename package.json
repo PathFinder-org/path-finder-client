@@ -1,0 +1,21 @@
+{
+  "name": "path-finder",
+  "version": "1.0.0",
+  "description": "find path using browser console",
+  "main": "copy-pasta.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon node_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grenudi/path-finder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grenudi/path-finder/issues"
+  },
+  "homepage": "https://github.com/grenudi/path-finder#readme"
+}

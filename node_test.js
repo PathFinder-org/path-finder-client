@@ -1,43 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>RouteFinder</title>
-	<style>
-		.window {
-			  margin: 0 auto;
-			  display:block;
-			  width: 40%;
-			  height: 50%;
-		}
-		#input_group * {display:inline!important;}
-		#output {
-			border: 1px solid cyan;
-		}
-		#output > * {
-			color: green;
-		}
-		#output_ping, #output_domain {
-			color: red;
-		}
-	</style>
-</head>
-<body>
-	<div class="window">
-		<form id="input_group" onsubmit="start(domain.value); return false">
-			<span><h4>Input domain name:</h3><input type="text" name="domain"></span>
-			<input type="submit" value="find paths">
-		</form>
-		<div id="output">
-			<h3>Domain: <span id="output_domain">0</span></h3>
-			<h3>Ping: <span id="output_ping">0</span></h3>
-			<h3>PATHS:</h3>
-			<div id="output_paths"></div>
-		</div>
-	</div>
-
-	<script>
-		//vars
+//vars
 		let _domain = {id: "output_domain", value: "default domain"};
 		let _ping = {id: "output_ping", value: "default ping"};
 		//proxies
@@ -104,7 +65,6 @@
 				
 			}
 		}
-		
 		const jaba = new plant();
 		jaba.next().then(x=>console.log(x));
 
@@ -173,9 +133,3 @@
 
 			})
 		}
-
-		// const test = new pingPlotter();
-		// setTimeout(()=>{ping.value = test.finish().getResult()}, 2000);
-	</script>
-</body>
-</html>
